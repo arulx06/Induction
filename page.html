@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blynk Switch Control</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    .button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 40px 80px; /* Increased padding for a larger button */
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 48px; /* Increased font size */
+      margin: 10px 5px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Slightly larger shadow */
+      transition: transform 0.2s;
+    }
+    .button:hover {
+      background-color: #45a049;
+      transform: scale(1.1); /* Slightly larger hover effect */
+    }
+  </style>
+  <script>
+    function turnOn() {
+      var xhr = new XMLHttpRequest();
+      var authToken = 't9zZy9O-CA5Tlenky__CamyE1qjzpBJH'; // Your Blynk Auth Token
+      var virtualPin = 'V2'; // The virtual pin assigned to the switch
+      var url = `https://blynk.cloud/external/api/update?token=${authToken}&${virtualPin}=1`;
+
+      xhr.open("GET", url, true);
+      xhr.send();
+      alert("Switch is turned ON!");
+    }
+  </script>
+</head>
+<body>
+  <button class="button" onclick="turnOn()">Click</button>
+</body>
+</html>
