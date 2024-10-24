@@ -14,39 +14,75 @@
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
     }
+
     .button {
-      background-color: #4CAF50;
+      background-color: #4CAF50; /* Default green */
       border: none;
       color: white;
-      padding: 40px 80px; /* Increased padding for a larger button */
+      padding: 40px 80px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 48px; /* Increased font size */
+      font-size: 48px;
       margin: 10px 5px;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Slightly larger shadow */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
       transition: transform 0.2s;
     }
+
     .button:hover {
-      background-color: #45a049;
-      transform: scale(1.1); /* Slightly larger hover effect */
+      transform: scale(1.1);
+    }
+
+    .on {
+      background-color: red; /* Red when switch is ON */
+    }
+
+    .off {
+      background-color: #4CAF50; /* Green when switch is OFF */
     }
   </style>
+
   <script>
+    const authToken = 't9zZy9O-CA5Tlenky__CamyE1qjzpBJH'; // Blynk Auth Token
+    const virtualPin = 'V2'; // Virtual pin assigned to the switch
+
     function turnOn() {
-      var xhr = new XMLHttpRequest();
-      var authToken = 't9zZy9O-CA5Tlenky__CamyE1qjzpBJH'; // Your Blynk Auth Token
-      var virtualPin = 'V2'; // The virtual pin assigned to the switch
-      var url = `https://blynk.cloud/external/api/update?token=${authToken}&${virtualPin}=1`;
+      const xhr = new XMLHttpRequest();
+      const url = `https://blynk.cloud/external/api/update?token=${authToken}&${virtualPin}=1`;
 
       xhr.open("GET", url, true);
       xhr.send();
     }
+
+    function checkSwitchState() {
+      const xhr = new XMLHttpRequest();
+      const url = `https://blynk.cloud/external/api/get?token=${authToken}&${virtualPin}`;
+
+      xhr.open("GET", url, true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          const switchState = xhr.responseText; // Response will be '1' or '0'
+          const button = document.querySelector(".button");
+
+          if (switchState === "1") {
+            button.classList.remove("off");
+            button.classList.add("on");
+          } else {
+            button.classList.remove("on");
+            button.classList.add("off");
+          }
+        }
+      };
+      xhr.send();
+    }
+
+    // Check the switch state every 2 seconds
+    setInterval(checkSwitchState, 2000);
   </script>
 </head>
 <body>
-  <button class="button" onclick="turnOn()">Capture</button>
+  <button class="button off" onclick="turnOn()">Capture</button>
 </body>
 </html>
